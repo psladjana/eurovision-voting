@@ -1,7 +1,7 @@
 <template>
  <div>
   <b-list-group>
-    <b-list-group-item v-for="country in countries" v-bind:key="country.id">{{country.name}}</b-list-group-item>
+    <b-list-group-item v-for="country in countries" v-bind:key="country.id" @click="voteRoute(country.id)">{{country.name}}</b-list-group-item>
   </b-list-group>
  </div>
 </template>
@@ -16,6 +16,12 @@ export default {
   }),
   mounted () {
     this.countries = countries
+  },
+  methods: {
+    voteRoute (id) {
+      console.log(id)
+      this.$router.push({ name: 'vote', params: { id: id } })
+    }
   }
 }
 </script>
