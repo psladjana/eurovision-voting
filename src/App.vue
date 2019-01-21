@@ -8,16 +8,18 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import Header from './components/shared/Header.vue'
 export default {
   name: 'App',
   components: {
     Header
+  },
+  created() {
+    this.getCountries()
+  },
+  methods: {
+    ...mapActions(['getCountries'])
   }
 }
 </script>
-
-<style lang="scss">
-
-</style>
-
