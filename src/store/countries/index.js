@@ -2,7 +2,7 @@ import * as types from './types'
 import countriesService from '../../services'
 
 const state = {
-    countries: []
+  countries: []
 }
 
 const getters = {
@@ -19,7 +19,6 @@ const actions = {
 
 const mutations = {
   [types.ADD_COUNTRY] (state, country) {
-    console.log(country)
     state.countries.push(country)
   }
 }

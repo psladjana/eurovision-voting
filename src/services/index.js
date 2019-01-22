@@ -1,7 +1,9 @@
 import firebase from 'firebase'
 
 export default {
-    getCountriesAPI
+  getCountriesAPI,
+  getVotesAPI,
+  addVoteAPI
 }
 
 function getCountriesAPI (addCallback, updateCallback, deleteCallback) {
@@ -25,3 +27,28 @@ function getCountriesAPI (addCallback, updateCallback, deleteCallback) {
     })
 }
 
+function getVotesAPI (addCallback, updateCallback, deleteCallback) {
+  firebase.firestore()
+    .collection('votes')
+    .onSnapshot((vote) => {
+      vote.docChanges().forEach(function (change) {
+        let vote = change.doc.data()
+        vote.id = change.doc.id
+        if (change.type === 'added') {
+          addCallback(vote)
+        }
+        if (change.type === 'modified') {
+            updateCallback(vote)
+        }
+        if (change.type === 'removed') {
+            deleteCallback(vote)
+        }
+      })
+      return vote
+    })
+}
+
+function addVoteAPI ({vote}) {
+  console.log('api', vote)
+  return firebase.firestore().collection('votes').add(vote)
+}

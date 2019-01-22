@@ -1,21 +1,29 @@
 <template>
   <b-card header="<b>Give a vote</b>">
-  <b-list-group>
-    <b-row class="text-left">
-        <b-list-group-item v-for="score in scores" v-bind:key="score.key">{{ score.label }} 
-          <b-form-select :options="options" class="mb-3" @change="disableVoting()"/> 
+    <b-list-group>
+      <b-row class="text-left">
+        <b-list-group-item v-for="score in scores" :key="score.key">{{ score.label }} 
+          <VoteItem :options="options" :score="score.key" @sendScore="setScore" />
         </b-list-group-item>
-    </b-row>  
-  </b-list-group>
-  <b-button variant="primary">Save</b-button>
+      </b-row>  
+    </b-list-group>
+    <b-button variant="primary" @click="sendVote()">Save</b-button>
   </b-card>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import VoteItem from './VoteItem.vue'
 export default {
   name: 'VotingPage',
+  components: {
+    VoteItem
+  },
   data: () => ({
+    vote: {
+      country: '',
+      scores: []
+    },
     options: [],
     scores: {
         1: {
@@ -62,11 +70,18 @@ export default {
   }),
   mounted () {
     this.setOptions()
+    this.options.map(option => {
+      if(option.value === this.$route.params.id) {
+        option.disabled = true
+        this.vote.country = option.text
+      }
+    })
   },
   computed: {
    ...mapGetters(['countries'])
   },
   methods: {
+    ...mapActions(['addVote']),
     setOptions () {
       this.options = this.countries.map(country => {
         var option = {
@@ -80,19 +95,12 @@ export default {
       })
       return this.options
     },
-    disableVoting () {
-      console.log(event.target.value)
-      this.options.map(option => {
-        if(option.value === event.target.value) {
-          option.disabled = true
-        }
-      })
-      return this.options
-    }
-  },
-  watch: {
-    'countries' (countries) {
-      this.setOptions()
+    setScore (payload) {
+      this.vote.scores.push(payload)
+    },
+    sendVote () {
+      this.addVote(this.vote)
+      this.$router.push({ name: 'countries' })
     }
   }
 }

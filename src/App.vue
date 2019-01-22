@@ -17,9 +17,21 @@ export default {
   },
   created() {
     this.getCountries()
+    this.getVotes()
   },
   methods: {
-    ...mapActions(['getCountries'])
+    ...mapActions(['getCountries', 'getVotes'])
   }
 }
 </script>
+<style lang="scss">
+  header {
+    margin-bottom: 40px;
+  }
+  .list-group-item {
+    border: none;
+  }
+  .card-header {
+    text-transform: uppercase;
+  }
+</style>

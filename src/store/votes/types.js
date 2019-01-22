@@ -1,0 +1,1 @@
+export const ADD_VOTE = 'countries/ADD_VOTE'

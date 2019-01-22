@@ -1,6 +1,6 @@
 import CountriesList from '../components/countries/CountriesList.vue'
 import Home from '../components/HomePage.vue'
-import VotingPage from '../components/VotingPage.vue'
+import VotingPage from '../components/voting/VotingPage.vue'
 import ResultsPage from '../components/ResultsPage.vue'
 
 export const routes = [
